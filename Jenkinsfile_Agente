@@ -49,7 +49,7 @@ pipeline {
                     }
                 }
             }
-        ]
+        }
 
         stage('Result') {
             steps {
