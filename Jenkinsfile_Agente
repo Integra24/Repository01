@@ -28,10 +28,10 @@ pipeline {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
+                                whoami
                                 set PYTHONPATH=%WORKSPACE%
                                 PATH= C:\\UNIR_DEVOPS\\SOFT\\Scripts
                                 pytest --junitxml=result-unir.xml test\\unit
-                                whoami
                             '''
                         }    
                     }                
