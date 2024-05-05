@@ -7,6 +7,7 @@ pipeline {
             steps {
                 // Obtener código del repositorio
                 git 'https://github.com/Integra24/Repository001.git'
+                bat 'whoami'
             }
         }
         stage('Build') {
@@ -30,6 +31,7 @@ pipeline {
                                 set PYTHONPATH=%WORKSPACE%
                                 PATH= C:\\UNIR_DEVOPS\\SOFT\\Scripts
                                 pytest --junitxml=result-unir.xml test\\unit
+                                whoami
                             '''
                         }    
                     }                
@@ -46,6 +48,7 @@ pipeline {
                             start java -jar C:\\UNIR_DEVOPS\\SOFT\\wiremock-standalone-3.5.4.jar --port 9090 --root-dir test\\wiremock
                             set PYTHONPATH=%WORKSPACE%
                             C:\\UNIR_DEVOPS\\SOFT\\Scripts\\pytest --junitxml=result-rest.xml test\\rest
+                            whoami
                         '''
                     }
                 }
@@ -53,9 +56,10 @@ pipeline {
         }
 
         stage('Result') {
+            agent any
             steps {
-                    junit 'result*.xml'
-                    echo 'FINISH!!!'
+                junit 'result*.xml'
+                echo 'FINISH!!!'
             }
         }  
         
