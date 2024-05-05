@@ -3,7 +3,9 @@ pipeline {
 
     stages {
         stage('Get code') {
-            agent any
+            agent {
+                label 'Agente_Code'
+            }
             steps {
                 // Obtener código del repositorio
                 git 'https://github.com/Integra24/Repository001.git'
