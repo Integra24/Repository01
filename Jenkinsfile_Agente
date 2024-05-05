@@ -10,6 +10,9 @@ pipeline {
                 // Obtener código del repositorio
                 git 'https://github.com/Integra24/Repository001.git'
                 bat 'whoami'
+
+                stash includes: 'app/**',  name: 'tempo_app'
+                stash includes: 'test/**',  name: 'tempo_test'
             }
         }
         stage('Build') {
@@ -29,6 +32,8 @@ pipeline {
                     }
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                            unstash 'tempo_app'
+                            unstash 'tempo_test'
                             bat '''
                                 whoami
                                 set PYTHONPATH=%WORKSPACE%
@@ -44,6 +49,8 @@ pipeline {
                         label 'Agente_Rest'
                     }
                     steps {
+                        unstash 'tempo_app'
+                        unstash 'tempo_test'
                         bat '''
                             set FLASK_APP=app\\api.py
                             start C:\\UNIR_DEVOPS\\SOFT\\Scripts\\flask run
