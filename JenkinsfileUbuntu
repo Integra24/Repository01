@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Get code') {
+            steps {
+                // Obtener codigo del repo
+                git 'https://Integra24@github.com/Integra24/Repository001.git'    
+            }
+        }
+         stage('Build') {
+            steps {
+                echo 'Ey, esto es Python. No hay que compilar nada'
+                echo WORKSPACE
+                sh 'python3 --version'
+            }
+        }
+         stage('Unit') {
+            steps {
+                sh '''
+                    whoami
+                    export PYTHONPATH=$WORKSPACE
+                    pytest --junitxml=result-unir.xml test/unit
+                '''
+            }
+        }
+         stage('Rest') {
+            steps {
+                sh '''
+                    whoami
+                    export FLASK_APP=app/api.py
+                    /usr/local/bin/flask run &
+                    sleep 3s
+                    java -jar /tmp/wiremock-standalone-3.5.4.jar --port 9090 --root-dir test/wiremock &
+                    sleep 5s
+                    PYTHONPATH=$WORKSPACE
+                    pytest --junitxml=result-rest.xml test/rest
+                '''
+            }
+        }        
+        
+        stage('Result') {
+            steps {
+                junit 'result*.xml'
+                echo 'FINISH'
+            }
+            
+        }
+        
+    }
+}
