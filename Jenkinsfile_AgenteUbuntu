@@ -53,11 +53,11 @@ pipeline {
                         sh '''
                             whoami
                             export FLASK_APP=app/api.py
-                            usr/local/bin/flask run &
+                            /usr/local/bin/flask run &
                             sleep 3s
-                            ava -jar /tmp/wiremock-standalone-3.5.4.jar --port 9090 --root-dir test/wiremock &
+                            java -jar /tmp/wiremock-standalone-3.5.4.jar --port 9090 --root-dir test/wiremock &
                             sleep 5s
-                            YTHONPATH=$WORKSPACE
+                            PYTHONPATH=$WORKSPACE
                             pytest --junitxml=result-rest.xml test/rest
                             whoami
                         '''
