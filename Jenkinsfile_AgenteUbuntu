@@ -70,7 +70,7 @@ pipeline {
             agent any
             steps {
                 sh 'pwd'
-                junit '/home/monica/DEVOPS/WORKSPACE/work_02/workspace/Jenkinfile_AgenteUbuntu/result*.xml'
+                junit 'result*.xml'
                 echo 'FINISH!!!'
             }
         }  
