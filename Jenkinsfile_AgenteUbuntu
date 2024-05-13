@@ -69,6 +69,7 @@ pipeline {
         stage('Result') {
             agent any
             steps {
+                pwd
                 junit 'result*.xml'
                 echo 'FINISH!!!'
             }
