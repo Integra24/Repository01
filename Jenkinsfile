@@ -5,7 +5,7 @@ pipeline {
         stage('Get code') {
             steps {
                 // Obtener código del repositorio
-                git 'https://github.com/Integra24/Repository001.git'
+                git 'https://github.com/Integra24/Repository01.git'
             }
         }
         stage('Static') {
