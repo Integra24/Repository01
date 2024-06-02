@@ -8,11 +8,12 @@ pipeline {
                 git 'https://github.com/Integra24/Repository001.git'
             }
         }
-        stage('Build') {
-            steps {
-                echo 'Eyyy, esto es Python. No hay que compilar nada'
-                echo WORKSPACE
-                bat 'dir'
+        stage('Static') {
+              steps {
+		          bat '''
+	              flake8 --format=pylint --exit-zero app >flake8.out
+                 '''
+                recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unstable: false]]
             }
         }
         stage('Unit') {
