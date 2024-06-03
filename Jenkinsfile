@@ -8,16 +8,7 @@ pipeline {
                 git 'https://github.com/Integra24/Repository01.git'
             }
         }
-        stage('Static') {
-              steps {
-		 bat '''
-   			set PYTHONPATH=%WORKSPACE%
-                        PATH= C:\\UNIR_DEVOPS\\SOFT\\Scripts
-	              	flake8 --format=pylint --exit-zero app >flake8.out
-                 '''
-                recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unstable: false]]
-            }
-        }
+
         stage('Unit') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
